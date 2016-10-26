@@ -11,27 +11,25 @@ import javax.persistence.*;
 @Entity
 @Table(name="role_table")
 @NamedQuery(name="RoleTable.findAll", query="SELECT r FROM RoleTable r")
-public class RoleTable implements Serializable {
+public class RoleTable  {
 	private static final long serialVersionUID = 1L;
-
-	@Id
 	private int role_id;
-
 	private String role;
-
-	//bi-directional many-to-one association to Employee
-	@ManyToOne
-	@JoinColumn(name="Empid")
 	private Employee employee;
+	private Project projectTable;
 
-	//bi-directional many-to-one association to ProjectTable
-	@ManyToOne
-	@JoinColumn(name="Proj_id")
-	private ProjectTable projectTable;
+	@Override
+	public String toString() {
+		return "RoleTable [role_id=" + role_id + ", role=" + role + ", employee=" + employee + "]";
+	}
+
 
 	public RoleTable() {
 	}
 
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getRole_id() {
 		return this.role_id;
 	}
@@ -39,6 +37,7 @@ public class RoleTable implements Serializable {
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
 	}
+
 
 	public String getRole() {
 		return this.role;
@@ -48,6 +47,10 @@ public class RoleTable implements Serializable {
 		this.role = role;
 	}
 
+
+	//bi-directional many-to-one association to Employee
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="Empid")
 	public Employee getEmployee() {
 		return this.employee;
 	}
@@ -56,11 +59,15 @@ public class RoleTable implements Serializable {
 		this.employee = employee;
 	}
 
-	public ProjectTable getProjectTable() {
+
+	//bi-directional many-to-one association to Project
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="Proj_id")
+	public Project getProjectTable() {
 		return this.projectTable;
 	}
 
-	public void setProjectTable(ProjectTable projectTable) {
+	public void setProjectTable(Project projectTable) {
 		this.projectTable = projectTable;
 	}
 

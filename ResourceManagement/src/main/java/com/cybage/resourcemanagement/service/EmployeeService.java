@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cybage.resourcemanagement.dao.IEmployeeDao;
-import com.cybage.resourcemanagement.dao.EmployeeDao;
 import com.cybage.resourcemanagement.model.Employee;
-import com.cybage.resourcemanagement.model.Student;
+import com.cybage.resourcemanagement.model.Project;
+import com.cybage.resourcemanagement.model.ResourceProjectTable;
+import com.cybage.resourcemanagement.model.RoleTable;
 
 @Service("employeeService")
 @Transactional
@@ -23,6 +24,19 @@ public class EmployeeService implements IEmployeeService
 		System.out.println("In Service");
 	}
 
+	public Integer getEmployee(String username, String password)
+	{
+		System.out.println("In Service . . ."+username);
+		return empDAO.getEmployee(username,password);
+	}
+
+	public Employee searchEmployee(int rollno)
+	{
+		System.out.println("In List Service");
+
+		return empDAO.searchEmployee(rollno);
+	}
+	
 	public Integer addEmployee(Employee employee)
 	{
 		System.out.println("In Service . . ."+employee.getDepartment());
@@ -35,11 +49,26 @@ public class EmployeeService implements IEmployeeService
 
 		return empDAO.listEmployee();
 	}
-
-	public Employee searchEmployee(int rollno)
+	
+	public List<Project> listProjects()
 	{
 		System.out.println("In List Service");
 
-		return empDAO.searchEmployee(rollno);
+		return empDAO.listProjects();
 	}
+	
+	public List<RoleTable> listRoles() 
+	{
+		System.out.println("In List Service");
+
+		return empDAO.listRoles();
+	}
+
+	public List<Object> listAllResources(String projName)
+	{
+		System.out.println("In List Service");
+
+		return empDAO.listAllResources(projName);
+	}
+
 }

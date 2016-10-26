@@ -2,76 +2,83 @@ package com.cybage.resourcemanagement.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
 /**
- * The persistent class for the employee database table.
+ * The persistent class for the project_table database table.
  * 
  */
 @Entity
-@NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
-public class Employee  {
-	@Override
-	public String toString() {
-		return "Employee [empid=" + empid + ", department=" + department + ", desigination=" + desigination + ", ename="
-				+ ename + "]";
-	}
-
+@Table(name="project_table")
+@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
+public class Project  {
 	private static final long serialVersionUID = 1L;
-	private int empid;
-	private String department;
-	private String desigination;
-	private String ename;
+	private int proj_id;
+	private Date proj_end_date;
+	private String proj_name;
+	private Date proj_start_date;
+	private String proj_status;
 	private List<ResourceProjectTable> resourceProjectTables;
 	private List<RoleTable> roleTables;
-	private List<SudoRoleTable> sudoRoleTables;
 	private List<TeamEmpidTable> teamEmpidTables;
 
-	public Employee() {
+	public Project() {
 	}
 
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	public int getEmpid() {
-		return this.empid;
+	public int getProj_id() {
+		return this.proj_id;
 	}
 
-	public void setEmpid(int empid) {
-		this.empid = empid;
-	}
-
-
-	public String getDepartment() {
-		return this.department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setProj_id(int proj_id) {
+		this.proj_id = proj_id;
 	}
 
 
-	public String getDesigination() {
-		return this.desigination;
+	@Temporal(TemporalType.DATE)
+	public Date getProj_end_date() {
+		return this.proj_end_date;
 	}
 
-	public void setDesigination(String desigination) {
-		this.desigination = desigination;
-	}
-
-
-	public String getEname() {
-		return this.ename;
-	}
-
-	public void setEname(String ename) {
-		this.ename = ename;
+	public void setProj_end_date(Date proj_end_date) {
+		this.proj_end_date = proj_end_date;
 	}
 
 
-	/*//bi-directional many-to-one association to ResourceProjectTable
-	@OneToMany(mappedBy="employee", cascade={CascadeType.ALL})
+	public String getProj_name() {
+		return this.proj_name;
+	}
+
+	public void setProj_name(String proj_name) {
+		this.proj_name = proj_name;
+	}
+
+
+	@Temporal(TemporalType.DATE)
+	public Date getProj_start_date() {
+		return this.proj_start_date;
+	}
+
+	public void setProj_start_date(Date proj_start_date) {
+		this.proj_start_date = proj_start_date;
+	}
+
+
+	public String getProj_status() {
+		return this.proj_status;
+	}
+
+	public void setProj_status(String proj_status) {
+		this.proj_status = proj_status;
+	}
+
+
+	//bi-directional many-to-one association to ResourceProjectTable
+	@OneToMany(mappedBy="projectTable")
 	public List<ResourceProjectTable> getResourceProjectTables() {
 		return this.resourceProjectTables;
 	}
@@ -82,21 +89,21 @@ public class Employee  {
 
 	public ResourceProjectTable addResourceProjectTable(ResourceProjectTable resourceProjectTable) {
 		getResourceProjectTables().add(resourceProjectTable);
-		resourceProjectTable.setEmployee(this);
+		resourceProjectTable.setProjectTable(this);
 
 		return resourceProjectTable;
 	}
 
 	public ResourceProjectTable removeResourceProjectTable(ResourceProjectTable resourceProjectTable) {
 		getResourceProjectTables().remove(resourceProjectTable);
-		resourceProjectTable.setEmployee(null);
+		resourceProjectTable.setProjectTable(null);
 
 		return resourceProjectTable;
 	}
 
 
 	//bi-directional many-to-one association to RoleTable
-	@OneToMany(mappedBy="employee")
+	@OneToMany(mappedBy="projectTable")
 	public List<RoleTable> getRoleTables() {
 		return this.roleTables;
 	}
@@ -107,46 +114,28 @@ public class Employee  {
 
 	public RoleTable addRoleTable(RoleTable roleTable) {
 		getRoleTables().add(roleTable);
-		roleTable.setEmployee(this);
+		roleTable.setProjectTable(this);
 
 		return roleTable;
 	}
 
 	public RoleTable removeRoleTable(RoleTable roleTable) {
 		getRoleTables().remove(roleTable);
-		roleTable.setEmployee(null);
+		roleTable.setProjectTable(null);
 
 		return roleTable;
 	}
 
 
-	//bi-directional many-to-one association to SudoRoleTable
-	@OneToMany(mappedBy="employee")
-	public List<SudoRoleTable> getSudoRoleTables() {
-		return this.sudoRoleTables;
-	}
-
-	public void setSudoRoleTables(List<SudoRoleTable> sudoRoleTables) {
-		this.sudoRoleTables = sudoRoleTables;
-	}
-
-	public SudoRoleTable addSudoRoleTable(SudoRoleTable sudoRoleTable) {
-		getSudoRoleTables().add(sudoRoleTable);
-		sudoRoleTable.setEmployee(this);
-
-		return sudoRoleTable;
-	}
-
-	public SudoRoleTable removeSudoRoleTable(SudoRoleTable sudoRoleTable) {
-		getSudoRoleTables().remove(sudoRoleTable);
-		sudoRoleTable.setEmployee(null);
-
-		return sudoRoleTable;
+	@Override
+	public String toString() {
+		return "Project [proj_id=" + proj_id + ", proj_end_date=" + proj_end_date + ", proj_name=" + proj_name
+				+ ", proj_start_date=" + proj_start_date + ", proj_status=" + proj_status + "]";
 	}
 
 
 	//bi-directional many-to-one association to TeamEmpidTable
-	@OneToMany(mappedBy="employee")
+	@OneToMany(mappedBy="projectTable")
 	public List<TeamEmpidTable> getTeamEmpidTables() {
 		return this.teamEmpidTables;
 	}
@@ -157,16 +146,16 @@ public class Employee  {
 
 	public TeamEmpidTable addTeamEmpidTable(TeamEmpidTable teamEmpidTable) {
 		getTeamEmpidTables().add(teamEmpidTable);
-		teamEmpidTable.setEmployee(this);
+		teamEmpidTable.setProjectTable(this);
 
 		return teamEmpidTable;
 	}
 
 	public TeamEmpidTable removeTeamEmpidTable(TeamEmpidTable teamEmpidTable) {
 		getTeamEmpidTables().remove(teamEmpidTable);
-		teamEmpidTable.setEmployee(null);
+		teamEmpidTable.setProjectTable(null);
 
 		return teamEmpidTable;
-	}*/
+	}
 
 }

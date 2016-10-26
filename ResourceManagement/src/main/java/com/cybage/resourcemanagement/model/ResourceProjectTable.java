@@ -12,33 +12,21 @@ import java.util.Date;
 @Entity
 @Table(name="resource_project_table")
 @NamedQuery(name="ResourceProjectTable.findAll", query="SELECT r FROM ResourceProjectTable r")
-public class ResourceProjectTable implements Serializable {
+public class ResourceProjectTable  {
 	private static final long serialVersionUID = 1L;
-
-	@Id
 	private int RP_id;
-
 	private float billing;
-
-	@Temporal(TemporalType.DATE)
 	private Date end_date;
-
-	@Temporal(TemporalType.DATE)
 	private Date start_date;
-
-	//bi-directional many-to-one association to Employee
-	@ManyToOne
-	@JoinColumn(name="Empid")
 	private Employee employee;
-
-	//bi-directional many-to-one association to ProjectTable
-	@ManyToOne
-	@JoinColumn(name="Proj_id")
-	private ProjectTable projectTable;
+	private Project projectTable;
 
 	public ResourceProjectTable() {
 	}
 
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getRP_id() {
 		return this.RP_id;
 	}
@@ -46,6 +34,7 @@ public class ResourceProjectTable implements Serializable {
 	public void setRP_id(int RP_id) {
 		this.RP_id = RP_id;
 	}
+
 
 	public float getBilling() {
 		return this.billing;
@@ -55,6 +44,8 @@ public class ResourceProjectTable implements Serializable {
 		this.billing = billing;
 	}
 
+
+	@Temporal(TemporalType.DATE)
 	public Date getEnd_date() {
 		return this.end_date;
 	}
@@ -63,6 +54,8 @@ public class ResourceProjectTable implements Serializable {
 		this.end_date = end_date;
 	}
 
+
+	@Temporal(TemporalType.DATE)
 	public Date getStart_date() {
 		return this.start_date;
 	}
@@ -71,6 +64,10 @@ public class ResourceProjectTable implements Serializable {
 		this.start_date = start_date;
 	}
 
+
+	//bi-directional many-to-one association to Employee
+	@ManyToOne(cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
+	@JoinColumn(name="Empid")
 	public Employee getEmployee() {
 		return this.employee;
 	}
@@ -79,12 +76,24 @@ public class ResourceProjectTable implements Serializable {
 		this.employee = employee;
 	}
 
-	public ProjectTable getProjectTable() {
+
+	//bi-directional many-to-one association to Project
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="Proj_id")
+	public Project getProjectTable() {
 		return this.projectTable;
 	}
 
-	public void setProjectTable(ProjectTable projectTable) {
+	public void setProjectTable(Project projectTable) {
 		this.projectTable = projectTable;
 	}
 
+
+	@Override
+	public String toString() {
+		return "ResourceProjectTable [RP_id=" + RP_id + ", billing=" + billing + ", end_date=" + end_date
+				+ ", start_date=" + start_date + ", employee=" + employee + ", projectTable=" + projectTable + "]";
+	}
+
+	
 }

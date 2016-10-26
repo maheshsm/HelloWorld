@@ -12,23 +12,24 @@ import java.util.List;
 @Entity
 @Table(name="team_table")
 @NamedQuery(name="TeamTable.findAll", query="SELECT t FROM TeamTable t")
-public class TeamTable implements Serializable {
+public class TeamTable  {
+	@Override
+	public String toString() {
+		return "TeamTable [tid=" + tid + ", team_name=" + team_name + ", team_status=" + team_status + "]";
+	}
+
 	private static final long serialVersionUID = 1L;
-
-	@Id
 	private int tid;
-
 	private String team_name;
-
 	private String team_status;
-
-	//bi-directional many-to-one association to TeamEmpidTable
-	@OneToMany(mappedBy="teamTable")
 	private List<TeamEmpidTable> teamEmpidTables;
 
 	public TeamTable() {
 	}
 
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getTid() {
 		return this.tid;
 	}
@@ -36,6 +37,7 @@ public class TeamTable implements Serializable {
 	public void setTid(int tid) {
 		this.tid = tid;
 	}
+
 
 	public String getTeam_name() {
 		return this.team_name;
@@ -45,6 +47,7 @@ public class TeamTable implements Serializable {
 		this.team_name = team_name;
 	}
 
+
 	public String getTeam_status() {
 		return this.team_status;
 	}
@@ -53,6 +56,9 @@ public class TeamTable implements Serializable {
 		this.team_status = team_status;
 	}
 
+
+	//bi-directional many-to-one association to TeamEmpidTable
+	@OneToMany(mappedBy="teamTable")
 	public List<TeamEmpidTable> getTeamEmpidTables() {
 		return this.teamEmpidTables;
 	}
